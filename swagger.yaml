@@ -1,0 +1,757 @@
+swagger: '2.0'
+info:
+  title: LAB API
+  description: API spec for LAB API.
+  version: "0.0.1"
+schemes:
+  - https
+basePath: /v1
+securityDefinitions:
+  bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - bearer: []
+consumes:
+  - application/json;charset=utf-8
+produces:
+  - application/json;charset=utf-8
+paths:
+  /members:
+    get:
+      operationId: list members
+      summary: List members
+      description: List members
+      parameters:
+        - name: search
+          in: query
+          description: Search  by free-text query
+          required: false
+          type: string
+        - name: firstResult
+          in: query
+          description: First result
+          required: false
+          type: integer
+          format: int64
+        - name: maxResults
+          in: query
+          description: Max results defaults to 10
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - Members
+      responses:
+        200:
+          description: An array of members
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Member'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  '/members/{memberId}':
+    get:
+      operationId: findMember
+      summary: Finds an member
+      description: Find member
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+      tags:
+        - Members
+      responses:
+        200:
+          description: A single member
+          schema:
+            $ref: '#/definitions/Member'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  '/members/{memberId}/invoices':
+    get:
+      operationId: listInvoices
+      summary: List invoices
+      description: List invoices
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: firstResult
+          in: query
+          description: First result
+          required: false
+          type: integer
+          format: int64
+        - name: maxResults
+          in: query
+          description: Max results defaults to 10
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - Members
+        - Invoices
+      responses:
+        200:
+          description: An array of invoices
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Invoice'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    post:
+      operationId: createInvoice
+      summary: Create invoice
+      description: Create invoice
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Invoice'
+      tags:
+        - Members
+        - Invoices
+      responses:
+        200:
+          description: Created invoice
+          schema:
+            $ref: '#/definitions/Invoice'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  '/members/{memberId}/invoices/{invoiceId}':
+    get:
+      operationId: findInvoice
+      summary: Finds a invoice
+      description: Find invoise
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: invoiceId
+          required: true
+          in: path
+          description: Invoice id
+          type: string
+          format: uuid
+      tags:
+        - Invoices
+      responses:
+        200:
+          description: A single invoice
+          schema:
+            $ref: '#/definitions/Invoice'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    put:
+      operationId: updateInvoice
+      summary: updates a member
+      description: Update member
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: invoiceId
+          required: true
+          in: path
+          description: Invoice id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Invoice'
+      tags:
+        - Invoices
+      responses:
+        200:
+          description: Updated invoice
+          schema:
+            $ref: '#/definitions/Invoice'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    delete:
+      operationId: deleteInvoice
+      summary: deletes a invoice
+      description: Delete invoice
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: invoiceId
+          required: true
+          in: path
+          description: Invoice id
+          type: string
+          format: uuid
+      tags:
+        - Invoices
+      responses:
+        204:
+          description: Empty resonse indicating a successful removal
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /announcements:
+    get:
+      operationId: listAnnouncements
+      summary: List announcements
+      description: List announcements
+      parameters:
+        - name: firstResult
+          in: query
+          description: First result
+          required: false
+          type: integer
+          format: int64
+        - name: maxResults
+          in: query
+          description: Max results defaults to 10
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - Announcements
+      responses:
+        200:
+          description: An array of announcements
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Announcement'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    post:
+      operationId: createAnnouncement
+      summary: Create announcement
+      description: Create announcement
+      parameters:
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Announcement'
+      tags:
+        - Announcements
+      responses:
+        200:
+          description: Created announcement
+          schema:
+            $ref: '#/definitions/Announcement'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  '/announcements/{announcementId}/':
+    get:
+      operationId: findAnnouncement
+      summary: Finds a announcement
+      description: Find announcement
+      parameters:
+        - name: announcementId
+          required: true
+          in: path
+          description: Announcement id
+          type: string
+          format: uuid
+      tags:
+        - Announcements
+      responses:
+        200:
+          description: A single announcement
+          schema:
+            $ref: '#/definitions/Announcement'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    put:
+      operationId: updateAnnouncement
+      summary: updates a announcement
+      description: Update announcement
+      parameters:
+        - name: announcementId
+          required: true
+          in: path
+          description: Announcement id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Announcement'
+      tags:
+        - Announcements
+      responses:
+        200:
+          description: Updated announcement
+          schema:
+            $ref: '#/definitions/Announcement'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    delete:
+      operationId: deleteAnnouncement
+      summary: deletes a announcement
+      description: Delete announcement
+      parameters:
+        - name: announcementId
+          required: true
+          in: path
+          description: Announcement id
+          type: string
+          format: uuid
+      tags:
+        - Announcements
+      responses:
+        204:
+          description: Empty resonse indicating a successful removal
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /doors:
+    get:
+      operationId: listDoors
+      summary: List doors
+      description: List doors
+      parameters:
+        - name: firstResult
+          in: query
+          description: First result
+          required: false
+          type: integer
+          format: int64
+        - name: maxResults
+          in: query
+          description: Max results defaults to 10
+          required: false
+          type: integer
+          format: int64
+      tags:
+        - Doors
+      responses:
+        200:
+          description: An array of doors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Door'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    post:
+      operationId: createDoor
+      summary: Create door
+      description: Create door
+      parameters:
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Door'
+      tags:
+        - Doors
+      responses:
+        200:
+          description: Created door
+          schema:
+            $ref: '#/definitions/Door'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  '/doors/{doorId}/':
+    get:
+      operationId: findDoor
+      summary: Finds a door
+      description: Find door
+      parameters:
+        - name: doorId
+          required: true
+          in: path
+          description: Door id
+          type: string
+          format: uuid
+      tags:
+        - Doors
+      responses:
+        200:
+          description: A single door
+          schema:
+            $ref: '#/definitions/Door'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    put:
+      operationId: updateDoor
+      summary: updates a door
+      description: Update door
+      parameters:
+        - name: doorId
+          required: true
+          in: path
+          description: Door id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Door'
+      tags:
+        - Doors
+      responses:
+        200:
+          description: Updated door
+          schema:
+            $ref: '#/definitions/Door'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    delete:
+      operationId: deleteDoor
+      summary: deletes a door
+      description: Delete door
+      parameters:
+        - name: doorId
+          required: true
+          in: path
+          description: Door id
+          type: string
+          format: uuid
+      tags:
+        - Doors
+      responses:
+        204:
+          description: Empty resonse indicating a successful removal
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /doors/{doorId}/actions:
+    post:
+      operationId: createDoorAction
+      summary: Create door action
+      description: Create door action
+      parameters:
+        - name: doorId
+          required: true
+          in: path
+          description: Door id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/DoorAction'
+      tags:
+        - Doors
+      responses:
+        204:
+          description: Empty response indicating succesfull action
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+definitions:
+  Member:
+    type: object
+    properties:
+      userId:
+        description: user id
+        type: string
+        format: uuid
+  Invoice:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      message:
+        type: string
+      amount:
+        type: integer
+        format: int64
+      paid:
+        type: boolean
+      due:
+        type: string
+        format: date-time
+      created:
+        type: string
+        format: date-time
+  Announcement:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      content:
+        type: string
+      type:
+        type: string
+        enum: [mail, slack]
+      recipients:
+        type: array
+        items:
+          type: string
+  Door:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      lastPing:
+        type: string
+        format: date-time
+  DoorAction:
+    type: object
+    properties:
+      type:
+        type: string
+        enum: [open]
+  InternalServerError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        
+  Forbidden:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        
+  BadRequest:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        
+  NotImplemented:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        
+  NotFound:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
