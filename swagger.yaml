@@ -288,42 +288,6 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/InternalServerError'
-    put:
-      operationId: updateAnnouncement
-      summary: updates a announcement
-      description: Update announcement
-      parameters:
-        - name: announcementId
-          required: true
-          in: path
-          description: Announcement id
-          type: string
-          format: uuid
-        - name: payload
-          in: body
-          description: Payload
-          required: true
-          schema:
-            $ref: '#/definitions/Announcement'
-      tags:
-        - Announcements
-      responses:
-        200:
-          description: Updated announcement
-          schema:
-            $ref: '#/definitions/Announcement'
-        400:
-          description: Invalid request was sent to the server
-          schema:
-            $ref: '#/definitions/BadRequest'
-        403:
-          description: Attempted to make a call with unauthorized client
-          schema:
-            $ref: '#/definitions/Forbidden'
-        500:
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/InternalServerError'
     delete:
       operationId: deleteAnnouncement
       summary: deletes a announcement
