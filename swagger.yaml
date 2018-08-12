@@ -548,7 +548,7 @@ definitions:
         type: string
       type:
         type: string
-        enum: [mail, slack]
+        enum: [MAIL, SLACK]
       recipients:
         type: array
         items:
@@ -569,7 +569,7 @@ definitions:
     properties:
       type:
         type: string
-        enum: [open]
+        enum: [OPEN]
   InternalServerError:
     type: object
     properties:
