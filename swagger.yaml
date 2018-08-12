@@ -553,6 +553,7 @@ definitions:
         type: array
         items:
           type: string
+          format: uuid
   Door:
     type: object
     properties:
