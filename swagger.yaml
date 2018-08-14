@@ -187,6 +187,41 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/InternalServerError'
+  '/members/{memberId}/actions':
+    post:
+      operationId: createMemberAction
+      summary: Create member action
+      description: Create member action
+      parameters:
+        - name: memberId
+          required: true
+          in: path
+          description: Member id
+          type: string
+          format: uuid
+        - name: payload
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/MemberAction'
+      tags:
+        - Members
+      responses:
+        204:
+          description: Empty response indicating successful action
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
   /announcements:
     get:
       operationId: listAnnouncements
@@ -525,13 +560,19 @@ definitions:
         type: string
       status:
         type: string
-        enum: [PENDING, MEMBER, SPACE_USER]
+        enum: [PENDING, MEMBER, SPACE_USER, LEFT]
       approved:
         type: string
         format: date-time
       created:
         type: string
         format: date-time
+  MemberAction:
+    type: object
+    properties:
+      type:
+        type: string
+        enum: [APPROVE, START_SPACE_USAGE, CANCEL_SPACE_USAGE, LEAVE]
   Announcement:
     type: object
     properties:
