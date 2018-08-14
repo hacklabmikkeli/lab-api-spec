@@ -18,18 +18,17 @@ consumes:
 produces:
   - application/json;charset=utf-8
 paths:
-  '/invoices':
+  '/members':
     get:
-      operationId: listInvoices
-      summary: List invoices
-      description: List invoices
+      operationId: listMembers
+      summary: List members
+      description: List members
       parameters:
-        - name: userId
+        - name: status
           in: query
-          description: Filter results by user id
+          description: Filter results by member status PENDING, MEMBER, SPACE_USER
           required: false
           type: string
-          format: uuid
         - name: firstResult
           in: query
           description: First result
@@ -43,14 +42,14 @@ paths:
           type: integer
           format: int64
       tags:
-        - Invoices
+        - Members
       responses:
         200:
-          description: An array of invoices
+          description: An array of members
           schema:
             type: array
             items:
-              $ref: '#/definitions/Invoice'
+              $ref: '#/definitions/Member'
         400:
           description: Invalid request was sent to the server
           schema:
@@ -64,23 +63,23 @@ paths:
           schema:
             $ref: '#/definitions/InternalServerError'
     post:
-      operationId: createInvoice
-      summary: Create invoice
-      description: Create invoice
+      operationId: createMember
+      summary: Create member
+      description: Create member
       parameters:
         - name: payload
           in: body
           description: Payload
           required: true
           schema:
-            $ref: '#/definitions/Invoice'
+            $ref: '#/definitions/Member'
       tags:
-        - Invoices
+        - Members
       responses:
         200:
-          description: Created invoice
+          description: Created member
           schema:
-            $ref: '#/definitions/Invoice'
+            $ref: '#/definitions/Member'
         400:
           description: Invalid request was sent to the server
           schema:
@@ -93,25 +92,25 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/InternalServerError'
-  '/invoices/{invoiceId}':
+  '/members/{memberId}':
     get:
-      operationId: findInvoice
-      summary: Finds a invoice
-      description: Find invoise
+      operationId: findMember
+      summary: Finds a member
+      description: Find member
       parameters:
-        - name: invoiceId
+        - name: memberId
           required: true
           in: path
-          description: Invoice id
+          description: Member id
           type: string
           format: uuid
       tags:
-        - Invoices
+        - Members
       responses:
         200:
-          description: A single invoice
+          description: A single member
           schema:
-            $ref: '#/definitions/Invoice'
+            $ref: '#/definitions/Member'
         400:
           description: Invalid request was sent to the server
           schema:
@@ -125,14 +124,14 @@ paths:
           schema:
             $ref: '#/definitions/InternalServerError'
     put:
-      operationId: updateInvoice
+      operationId: updateMember
       summary: updates a member
       description: Update member
       parameters:
-        - name: invoiceId
+        - name: memberId
           required: true
           in: path
-          description: Invoice id
+          description: Member id
           type: string
           format: uuid
         - name: payload
@@ -140,14 +139,14 @@ paths:
           description: Payload
           required: true
           schema:
-            $ref: '#/definitions/Invoice'
+            $ref: '#/definitions/Member'
       tags:
-        - Invoices
+        - Members
       responses:
         200:
-          description: Updated invoice
+          description: Updated member
           schema:
-            $ref: '#/definitions/Invoice'
+            $ref: '#/definitions/Member'
         400:
           description: Invalid request was sent to the server
           schema:
@@ -161,18 +160,18 @@ paths:
           schema:
             $ref: '#/definitions/InternalServerError'
     delete:
-      operationId: deleteInvoice
-      summary: deletes a invoice
-      description: Delete invoice
+      operationId: deleteMember
+      summary: deletes a member
+      description: Delete member
       parameters:
-        - name: invoiceId
+        - name: memberId
           required: true
           in: path
-          description: Invoice id
+          description: Member id
           type: string
           format: uuid
       tags:
-        - Invoices
+        - Members
       responses:
         204:
           description: Empty resonse indicating a successful removal
@@ -516,23 +515,18 @@ paths:
           schema:
             $ref: '#/definitions/InternalServerError'
 definitions:
-  Invoice:
+  Member:
     type: object
     properties:
       id:
         type: string
         format: uuid
-      userId:
+      stripeCustomerId:
         type: string
-        format: uuid
-      message:
+      status:
         type: string
-      amount:
-        type: integer
-        format: int64
-      paid:
-        type: boolean
-      due:
+        enum: [PENDING, MEMBER, SPACE_USER]
+      approved:
         type: string
         format: date-time
       created:
