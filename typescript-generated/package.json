@@ -1,0 +1,27 @@
+{
+  "name": "beer-api-ts-client",
+  "version": "0.0.1",
+  "description": "swagger client for beer-api-ts-client",
+  "author": "Swagger Codegen Contributors",
+  "keywords": [
+    "fetch",
+    "typescript",
+    "swagger-client",
+    "beer-api-ts-client"
+  ],
+  "license": "Unlicense",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --outDir dist/",
+    "postinstall": "npm run build"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "@types/isomorphic-fetch": "0.0.34"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.9",
+    "typescript": "^2.0"
+  }
+}
